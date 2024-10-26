@@ -24,7 +24,7 @@ travels = {
 df_travels = pd.DataFrame(travels)
 
 # Display travels on map
-st.map(df_travels)
+st.map(df_travels, use_container_width=False, width=600, height=400)
 
 # Display the DataFrame
 st.write("List of our travels")
@@ -34,5 +34,8 @@ st.dataframe(df_travels)
 st.subheader("Edit Travels", divider="red")
 st.write("To edit your travels, simply download the current travel file, edit the file and upload the file.")
 
-st.button("Download Travel File")
-st.button("Upload Travel File")
+if st.button("Download Travel File"):
+    st.write("This is just a download dummy.")
+
+if st.button("Upload Travel File"):
+    st.write("This is just an upload dummy.")

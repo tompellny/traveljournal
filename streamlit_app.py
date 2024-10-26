@@ -3,7 +3,15 @@ import pandas as pd
 import numpy as np
 
 # ---------------- APP SETTINGS ---------------------------
-st.set_page_config(page_title="Travel Journal", layout="wide")
+st.set_page_config(
+    page_title="Travel Journal",
+    layout="centered",
+    menu_items={
+        'Get help': "https://www.tbdxxx.com/help",
+        'Report a bug': "https://www.tbdxxx.com/bug",
+        'About':  "Nothing yet"
+        }
+    )
 
 # ---------------- PAGE TITLE -----------------------------
 #st.image("assets/logo_finstory_symboltext.png", width=100)
@@ -24,7 +32,7 @@ travels = {
 df_travels = pd.DataFrame(travels)
 
 # Display travels on map
-st.map(df_travels, use_container_width=False, width=600, height=400)
+st.map(df_travels)
 
 # Display the DataFrame
 st.write("List of our travels")

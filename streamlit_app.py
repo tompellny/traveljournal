@@ -29,3 +29,10 @@ st.map(df_travels)
 # Display the DataFrame
 st.write("List of our travels")
 st.dataframe(df_travels)
+
+# ---------------- UPLOAD/DOWNLOAD TRAVELS ----------------
+st.subheader("Edit Travels", divider="red")
+st.write("To edit your travels, simply download the current travel file, edit the file and upload the file.")
+
+st.button("Download Travel File")
+st.button("Upload Travel File")

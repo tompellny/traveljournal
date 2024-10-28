@@ -14,9 +14,9 @@ st.set_page_config(
     )
 
 # ---------------- PAGE TITLE -----------------------------
-#st.image("assets/logo_finstory_symboltext.png", width=100)
 st.title('«Travel Journal»')
-
+st.image("assets/logo_travel.png", width=250)
+st.write("")
 
 tab1, tab2 = st.tabs(["Done That", "Bucket List"])
 

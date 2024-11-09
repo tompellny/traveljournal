@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import requests
+from datetime import datetime, timedelta
 
 # ---------------- APP SETTINGS ---------------------------
 st.set_page_config(
@@ -13,12 +15,15 @@ st.set_page_config(
         }
     )
 
+def format_date_for_api(date):
+    return date.strftime('%Y%m%d') + '0300', date.strftime('%Y%m%d') + '2100'
+
 # ---------------- PAGE TITLE -----------------------------
 st.title('«Travel Journal»')
 st.image("assets/logo_travel.png", width=250)
 st.write("")
 
-tab1, tab2 = st.tabs(["Done That", "Bucket List"])
+tab1, tab2, tab3 = st.tabs(["Done That", "Bucket List", "Water Temperature"])
 
 with tab1:
 
@@ -56,3 +61,34 @@ with tab1:
 with tab2:
     st.subheader("Travel Bucket List", divider="red")
     st.write("One day, I will travel to these places.")
+
+with tab3:
+    st.subheader("Water Temperature", divider="red")
+    st.write("Request water temperature via API from https://www.alplakes.eawag.ch/")
+
+    # User input fields
+    lake = st.selectbox('Choose Lake:', ['zurich', 'greifensee', 'stmoritz', 'hallwil', 'aegeri', 'geneva'])
+    date = st.date_input('Choose Date:')
+
+    if st.button('Get Temperature'):
+        # Construct API parameters
+        model = 'delft3d-flow'
+        start_time, end_time = format_date_for_api(date)
+        depth = 1
+
+        # API request
+        api_url = f"https://alplakes-api.eawag.ch/simulations/layer/average_temperature/{model}/{lake}/{start_time}/{end_time}/{depth}"
+        response = requests.get(api_url)
+
+        # Show the data or an error message
+        if response.status_code == 200:
+            data = response.json()
+            temperatures = data['variable']['data']
+            min_temp = round(min(temperatures), 1)
+            max_temp = round(max(temperatures), 1)
+            avg_temp = round((min_temp + max_temp)/2, 1)
+
+            st.metric("Estimated Temperature", f"{avg_temp} °C")
+            st.write(f"(between {min_temp} and {max_temp} °C.)")
+        else:
+            st.error("Failed to fetch data from API.")
